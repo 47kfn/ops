@@ -222,7 +222,7 @@ Human (最終意思決定者)
 
 人間がやることを明確に限定する。
 
-**必ずやること（3つだけ）:**
+**日常運用で必ずやること（3つ）:**
 1. `proposed` を見て `ready` に昇格させる（「今日何を回すか」を決める）
 2. `review` を見て merge / close / hold を決める
 3. `blocked` を見て判断する（破壊的操作・課金操作・本番操作・仕様確定）
@@ -242,6 +242,21 @@ Human (最終意思決定者)
 - session の起動（`claude` コマンドの実行）
 - ready にある task の実行開始（worktree に cd して session を起動）
 - review session の起動
+
+## 1-3a. Decision Gate（設計判断ゲート）
+
+技術スタック、詳細設計、本番構成、認証情報管理、実行構成など、後続タスク全体に影響する判断は通常の実装タスクとして扱わない。Triage Agent はこれらを見つけたら、実装ではなく設計判断の材料作成として扱う。
+
+扱い順は固定する。
+
+1. options document を作る
+2. 複数案を比較する
+3. 人間が選ぶ
+4. `00-docs/decisions.md` に記録する
+5. `architecture.md` / `technical_design.md` に反映する
+6. その後に task packet 化する
+
+AIの役割は候補整理・比較・影響分析までである。current mode では、人間が options document を読み、採用案を明示してから次のセッションに進める。未決定のまま実装に進む必要が出た場合は、`needs_human_decision` または `spec_ambiguity` として blocked にする。
 
 ## 1-4. セッション開始時の状態処理優先順位
 
